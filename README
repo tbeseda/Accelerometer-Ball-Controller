@@ -1,0 +1,10 @@
+Control a ball in a browser window from a mobile browser window that supports accelerometer APIs!
+
+iOS 4.2+ brought accelerometer and gyroscope APIs to Mobile Safari.
+
+@firt wrote up some of the APIs and included a cool demo: http://www.mobilexweb.com/blog/safari-ios-accelerometer-websockets-html5
+
+I expanded on it with a pubnub.com account to push data from the device (controller.html) to the ball (index.html) on another machine!  
+Neat :)
+
+*Warning, you can quickly blow out your Pubnub usage limits.*
