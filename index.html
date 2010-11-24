@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Ball Controller</title>
+<style>
+	#content {position: relative;}
+	#ball {
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		-webkit-radius: 10px;
+		background-color: red;
+		position:absolute;
+		top: 200px;
+		left: 300px;
+	}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script>
+/*
+Curious about the code? Great! Welcome to this code ;)
+Feel free to copy and use this code
+In fact, that's what I (@tbeseda) did. Found it here: http://www.mobilexweb.com/blog/safari-ios-accelerometer-websockets-html5
+and expanded on it!
+
+If you are going to blog or tweet about it or if you are going to create a better
+code, please mantain the link to www.mobilexweb.com or @firt in Twitter-- and @tbeseda :)
+*/
+	// Position Variables
+	var x = 0;
+	var y = 0;
+
+	// Speed - Velocity
+	var vx = 0;
+	var vy = 0;
+
+	// Acceleration
+	var ax = 0;
+	var ay = 0;
+
+	var delay = 10;
+	var vMultiplier = 0.01;
+	$(function() {
+		PUBNUB.subscribe({channel: 'ball'}, function(message) {
+			ax = message.x;
+			ay = message.y;
+			vy = vy + -(ay);
+			vx = vx + ax;
+			
+			var ball = document.getElementById("ball");
+			y = parseInt(y + vy * vMultiplier);
+			x = parseInt(x + vx * vMultiplier);
+			
+			if (x<0) { x = 0; vx = 0; }
+			if (y<0) { y = 0; vy = 0; }
+			if (x>document.documentElement.clientWidth-20) { x = document.documentElement.clientWidth-20; vx = 0; }
+			if (y>document.documentElement.clientHeight-20) { y = document.documentElement.clientHeight-20; vy = 0; }
+			
+			ball.style.top = y + "px";
+			ball.style.left = x + "px";
+		});
+
+	});
+</script>
+</head>
+
+<body>
+<div id="content">
+    <div id="yes">
+        <p>connect your iPhone to /controller.html</p>
+        <div id="ball"></div>
+    </div>
+</div>
+<script src="http://pubnub.s3.amazonaws.com/pubnub-3.0.min.js"
+    pub-key="get yer own"
+    sub-key="get yer own"
+    ssl="off"
+    origin="pubsub.pubnub.com"
+    id="pubnub"
+></script>
+</body>
+</html>

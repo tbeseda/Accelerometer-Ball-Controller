@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Controller</title>
+<meta name="viewport" content="width=device-width,user-scalable=no" />
+<style>
+	body {font-family: Helvetica, Arial;}
+	#yes {display: none}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script>
+$(function() {
+	if (window.DeviceMotionEvent != undefined) {
+		$('#no').hide();
+		$('#yes').show();
+		window.ondevicemotion = function(event) {
+			var e = {};
+			e.x = event.accelerationIncludingGravity.x;
+			e.y = event.accelerationIncludingGravity.y;
+			PUBNUB.publish({channel: 'ball', message: e});
+		}
+	}
+});
+</script>
+</head>
+<body>
+	<div id="content">
+		<h1 id="yes">Move the Ball</h1>
+		<p id="no">no accelerometer on this device</p>
+	</div>
+	<script src="http://pubnub.s3.amazonaws.com/pubnub-3.0.min.js"
+	    pub-key="get yer own"
+	    sub-key="get yer own"
+	    ssl="off"
+	    origin="pubsub.pubnub.com"
+	    id="pubnub"
+	></script>
+</body>
+</html>
